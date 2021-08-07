@@ -3,6 +3,8 @@ const LocalStrategy = require("passport-local").Strategy;
 
 const User = require("../models/user");
 
+//after you set up here it means that all the req, res can use passport as well
+
 module.exports = (app) => {
   //Middleware
   app.use(passport.initialize());

@@ -27,6 +27,13 @@ app.use(methodOverride("_method"));
 
 usePassport(app);
 
+//把authenticated result放到respond裡面
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.user = req.user;
+  next();
+});
+
 app.use(routes);
 
 app.listen(PORT, () => {

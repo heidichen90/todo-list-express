@@ -45,4 +45,10 @@ router.post("/register", (req, res) => {
   res.render("register");
 });
 
+router.get("/logout", (req, res) => {
+  //calling logout, passport will automatically clear out the session
+  req.logout();
+  res.redirect("/users/login");
+});
+
 module.exports = router;

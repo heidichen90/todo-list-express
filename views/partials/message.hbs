@@ -1,6 +1,29 @@
-<div class="alert alert-warning alert-dimissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+{{#if success_msg}}
+<div class="alert alert-success alert-dimissible fade show" role="alert">
+  {{{success_msg}}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+{{/if}}
+
+{{#if errors}}
+  {{#each errors}}
+    <div class="alert alert-danger alert-dimissible fade show" role="alert">
+      {{{this.message}}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {{/each}}
+{{/if}}
+
+
+{{#if warning_msg}}
+    <div class="alert alert-warning alert-dimissible fade show" role="alert">
+      {{{warning_msg}}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{{/if}}

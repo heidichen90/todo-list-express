@@ -22,11 +22,12 @@ router.get("/register", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
+  console.log("register");
   const { name, email, password, confirmPassword } = req.body;
   User.findOne({ email }).then((user) => {
     if (user) {
       console.log("User already exist.");
-      res.render("register", {
+      return res.render("register", {
         name,
         email,
         password,
@@ -34,6 +35,7 @@ router.post("/register", (req, res) => {
       });
     } else {
       //create a new user
+      console.log("create new user");
       return User.create({ name, email, password })
         .then(() => {
           res.redirect("/");
@@ -41,7 +43,6 @@ router.post("/register", (req, res) => {
         .catch((err) => console.log(err));
     }
   });
-  res.render("register");
 });
 
 router.get("/logout", (req, res) => {

@@ -15,7 +15,6 @@ module.exports = (app) => {
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({ email })
         .then((user) => {
-          console.log("strategy");
           if (!user) {
             return done(null, false, {
               message: "This email is not reqistered",

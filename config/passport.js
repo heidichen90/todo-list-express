@@ -17,7 +17,7 @@ module.exports = (app) => {
         .then((user) => {
           if (!user) {
             return done(null, false, {
-              message: "This email is not reqistered",
+              message: "This email is not registered",
             });
           }
 

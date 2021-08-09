@@ -18,6 +18,15 @@
   {{/each}}
 {{/if}}
 
+{{#if error_msg}}
+    <div class="alert alert-danger alert-dimissible fade show" role="alert">
+      {{{error_msg}}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{{/if}}
+
 
 {{#if warning_msg}}
     <div class="alert alert-warning alert-dimissible fade show" role="alert">

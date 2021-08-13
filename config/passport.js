@@ -2,6 +2,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 //after you set up here it means that all the req, res can use passport as well
 
@@ -20,14 +21,15 @@ module.exports = (app) => {
               message: "This email is not registered",
             });
           }
+          return bcrypt.compare(password, user.password).then((isMatch) => {
+            if (!isMatch) {
+              return done(null, false, {
+                message: "Email or Password incorrect",
+              });
+            }
 
-          if (user.password !== password) {
-            return done(null, false, {
-              message: "Email or Password incorrect",
-            });
-          }
-
-          return done(null, user);
+            return done(null, user);
+          });
         })
         .catch((error) => done(error, false));
     })

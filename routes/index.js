@@ -6,6 +6,7 @@ const todos = require("./modules/todos");
 const users = require("./modules/users");
 const auth = require("./modules/auth");
 
+//登入之後才可以用的再放這一層
 const { authenticator } = require("../middleware/auth");
 
 //router由上到下去比對，條件寬鬆的往後放

@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 //after you set up here it means that all the req, res can use passport as well
 
 module.exports = (app) => {
+  console.log("startegy middleware");
   //Middleware
   app.use(passport.initialize());
   app.use(passport.session());
@@ -38,16 +39,37 @@ module.exports = (app) => {
   );
 
   //facebook strategy
+  console.log("facebook strategy");
   passport.use(
     new FacebookStrategy(
       {
-        clientID: "401112891372089",
-        clientSecret: "15ec637099764c328f015859b6157cc7",
-        callbackURL: "http://localhost:3000/auth/facebook/callback",
+        clientID: process.env.FACEBOOK_ID,
+        clientSecret: process.env.FACEBOOK_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK,
         profileFields: ["email", "displayName"],
       },
-      function (accessToken, refreshToken, profile, done) {
-        console.log(profile);
+      (accessToken, refreshToken, profile, done) => {
+        //profile is the data you get from facebook once user is autheticated
+        const { email, name } = profile._json;
+        User.findOne({ email }).then((user) => {
+          if (user) return done(null, user);
+
+          //create random password
+          const randomPassword = Math.random().toString(36).slice(-8);
+          //get password hash
+          bcrypt
+            .genSalt(10)
+            .then((salt) => bcrypt.hash(randomPassword, salt))
+            .then((hash) =>
+              User.create({
+                name,
+                email,
+                password: hash,
+              })
+            )
+            .then((user) => done(null, user))
+            .catch((err) => done(err, false));
+        });
       }
     )
   );

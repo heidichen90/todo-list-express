@@ -1,5 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
@@ -11,12 +12,13 @@ module.exports = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  //Strategies
+  //local strategy
   passport.use(
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({ email })
         .then((user) => {
           if (!user) {
+            console.log("no users");
             return done(null, false, {
               message: "This email is not registered",
             });
@@ -31,8 +33,23 @@ module.exports = (app) => {
             return done(null, user);
           });
         })
-        .catch((error) => done(error, false));
+        .catch((error) => console.warn(error));
     })
+  );
+
+  //facebook strategy
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: "401112891372089",
+        clientSecret: "15ec637099764c328f015859b6157cc7",
+        callbackURL: "http://localhost:3000/auth/facebook/callback",
+        profileFields: ["email", "displayName"],
+      },
+      function (accessToken, refreshToken, profile, done) {
+        console.log(profile);
+      }
+    )
   );
 
   //Session

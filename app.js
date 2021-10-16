@@ -31,6 +31,7 @@ app.use(flash());
 
 //把authenticated result放到respond裡面
 app.use((req, res, next) => {
+  console.log("---", "here is the authenticated result", req.flash("error"));
   //這邊放在res.locals代表之後在hadlebars可以直接用
   res.locals.isAuthenticated = req.isAuthenticated();
   res.locals.user = req.user;
